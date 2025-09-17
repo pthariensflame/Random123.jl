@@ -11,3 +11,4 @@ actual/
 /deps/aes-ni
 Manifest.toml
 .DS_Store
+.vscode/settings.json
