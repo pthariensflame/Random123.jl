@@ -16,9 +16,9 @@ const LITTLE_ENDIAN::Bool = ENDIAN_BOM ≡ 0x04030201
 
 abstract type ArmVec128 end
 @inline Base.convert(::Type{T}, x::ArmVec128) where {T<:Union{ArmVec128, UInt128}} =
-    unsafe_load(Ptr{T}(pointer_from_objref(Ref(x))))
+    GC.@preserve x unsafe_load(Ptr{T}(pointer_from_objref(Ref(x))))
 @inline Base.convert(::Type{T}, x::UInt128) where {T<:ArmVec128} =
-    unsafe_load(Ptr{T}(pointer_from_objref(Ref(x))))
+    GC.@preserve x unsafe_load(Ptr{T}(pointer_from_objref(Ref(x))))
 @inline Base.UInt128(x::ArmVec128) = convert(UInt128, x)
 @inline (::Type{T})(x::Union{ArmVec128, UInt128}) where {T<:ArmVec128} = convert(T, x)
 @inline Base.convert(::Type{T}, x::Union{Signed, Unsigned}) where {T<:ArmVec128} =

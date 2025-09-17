@@ -15,7 +15,7 @@ abstract type R123Generator2x{T} <: AbstractR123{T} end
 "RNG that generates four numbers at a time."
 abstract type R123Generator4x{T} <: AbstractR123{T} end
 
-_value(r::AbstractR123{T}, i = 1, ::Type{T2} = T) where {T, T2} = unsafe_load(Ptr{T2}(pointer_from_objref(r)), i)
+_value(r::AbstractR123{T}, i = 1, ::Type{T2} = T) where {T, T2} = GC.@preserve r unsafe_load(Ptr{T2}(pointer_from_objref(r)), i)
 
 "Set the counter of a Random123 RNG."
 @inline function set_counter!(r::R123Generator1x{T}, ctr::Integer) where T <: UInt128
