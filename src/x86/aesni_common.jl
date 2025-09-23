@@ -8,8 +8,8 @@ const __m128i_lvec = NTuple{2, VecElement{UInt64}}
 struct __m128i
     data::__m128i_lvec
 end
-Base.convert(::Type{__m128i}, x::UInt128) = unsafe_load(Ptr{__m128i}(pointer_from_objref(Ref(x))))
-Base.convert(::Type{UInt128}, x::__m128i) = unsafe_load(Ptr{UInt128}(pointer_from_objref(Ref(x))))
+Base.convert(::Type{__m128i}, x::UInt128) = GC.@preserve x unsafe_load(Ptr{__m128i}(pointer_from_objref(Ref(x))))
+Base.convert(::Type{UInt128}, x::__m128i) = GC.@preserve x unsafe_load(Ptr{UInt128}(pointer_from_objref(Ref(x))))
 Base.UInt128(x::__m128i) = convert(UInt128, x)
 __m128i(x::UInt128) = convert(__m128i, x)
 Base.convert(::Type{__m128i}, x::Union{Signed, Unsigned}) = convert(__m128i, UInt128(x))
